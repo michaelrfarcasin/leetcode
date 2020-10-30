@@ -40,7 +40,7 @@ namespace TwoSum
         {
             int target = 5;
             int[] numbers = { 1, 2, 3 };
-            Assert.Equal(new[] { 1, 2 }, findTwo.SumToTargetON(numbers, target));
+            Assert.Equal(new[] { 1, 2 }, findTwo.SumToTarget(numbers, target));
         }
     }
 }

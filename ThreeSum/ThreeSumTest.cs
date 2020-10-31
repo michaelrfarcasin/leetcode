@@ -50,7 +50,7 @@ namespace ThreeSum
             IList<IList<int>> actual = findSetsOfThree.SumToZero(numbers);
 
             // Assert
-            Assert.Equal(CreateLists(new[] { new[] { 0, 0, 0 } }), actual);
+            Assert.Equal(CreateLists(new[] { 0, 0, 0 }), actual);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace ThreeSum
             IList<IList<int>> actual = findSetsOfThree.SumToZero(numbers);
 
             // Assert
-            Assert.Equal(CreateLists(new[] { new[] { -1, 0, 1 } }), actual);
+            Assert.Equal(CreateLists(new[] { -1, 0, 1 }), actual);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace ThreeSum
             IList<IList<int>> actual = findSetsOfThree.SumToZero(numbers);
 
             // Assert
-            Assert.Equal(CreateLists(new[] { new[] { -1, 0, 1 } }), actual);
+            Assert.Equal(CreateLists(new[] { -1, 0, 1 }), actual);
         }
 
         [Fact]
@@ -89,10 +89,10 @@ namespace ThreeSum
             IList<IList<int>> actual = findSetsOfThree.SumToZero(numbers);
 
             // Assert
-            Assert.Equal(CreateLists(new[] { new[] { -1, 0, 1 } }), actual);
+            Assert.Equal(CreateLists(new[] { -1, 0, 1 }), actual);
         }
 
-        private IList<IList<int>> CreateLists(int[][] arrayLists)
+        private IList<IList<int>> CreateLists(params int[][] arrayLists)
         {
             IList<IList<int>> lists = new List<IList<int>>();
             foreach (int[] arrayList in arrayLists) {

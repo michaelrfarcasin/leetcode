@@ -12,11 +12,6 @@ let addWithPadding (first: int list) (second: int list) =
         else second
     List.map2 (+) paddedFirst paddedSecond
 
-let removeLastIfZero =
-    function 
-    | ints when List.last ints = 0 -> ints.[.. (ints.Length - 2)]
-    | ints -> ints
-
 let rec addTensDigitsToOnesDigits =
     function 
     | [] -> []

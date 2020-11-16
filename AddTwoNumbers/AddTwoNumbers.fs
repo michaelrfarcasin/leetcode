@@ -24,5 +24,5 @@ let rec addTensDigitsToOnesDigits =
         newHead :: (addTensDigitsToOnesDigits (secondInt::ints.Tail.Tail))
 
 let addTwoNumbers (first: int list) (second: int list) =
-    let listOfSums = addWithPadding first second
-    addTensDigitsToOnesDigits listOfSums
+    addWithPadding (List.rev first) (List.rev second) |> addTensDigitsToOnesDigits |> List.rev 
+    

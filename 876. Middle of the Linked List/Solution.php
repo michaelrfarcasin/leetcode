@@ -16,26 +16,16 @@ class Solution {
     /**
      * @param ListNode $head
      * @return ListNode
+     * @source https://leetcode.com/problems/middle-of-the-linked-list/solutions/2731381/best-php-solution/
      */
     function middleNode($head) {
-        $listLength = $this->getListLength($head);
-        $halfLength = floor($listLength / 2);
-        for ($i = 0; $i < $halfLength; $i++) {
-            $head = $head->next;
+        $slow = $head;
+
+        while ($head->next !== null) {
+            $slow = $slow->next;
+            $head = $head->next->next;
         }
 
-        return $head;
-    }
-
-    private function getListLength($head) {
-        return $this->getLengthWithTailRecursion($head, 0);
-    }
-
-    private function getLengthWithTailRecursion($head, $runningLength) {
-        if ($head->next == null) {
-            return $runningLength + 1;
-        }
-
-        return $this->getLengthWithTailRecursion($head->next, $runningLength + 1);
+        return $slow;
     }
 }

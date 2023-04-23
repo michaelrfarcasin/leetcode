@@ -23,7 +23,7 @@ class Solution {
         }
         $walker = $head;
         $runner = $head->next;
-        while ($walker != $runner) {
+        while ($walker !== $runner) {
             if ($runner === null || $runner->next === null) {
                 return false;
             }

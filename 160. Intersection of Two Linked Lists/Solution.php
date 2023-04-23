@@ -9,48 +9,61 @@
  * }
  */
 
+class Lengths {
+    public $a = 0;
+    public $b = 0;
+    public function __construct($a, $b) {
+        $this->a = $a;
+        $this->b = $b;
+    }
+}
+
 class Solution {
     /**
      * @param ListNode $headA
      * @param ListNode $headB
      * @return ListNode
+     * @source https://leetcode.com/problems/intersection-of-two-linked-lists/solutions/3379000/beats-96-time-and-100-space-complexities/
      */
     function getIntersectionNode($headA, $headB) {
-        $shorterLength = 0;
+        $lengths = $this->getLengthsOfLists($headA, $headB);
+        return $this->findIntersectionNodeForListsWithLengths($headA, $headB, $lengths);
+    }
+
+    private function getLengthsOfLists($headA, $headB) {
+        $lengthA = 0;
+        $lengthB = 0;
         $walkerA = $headA;
         $walkerB = $headB;
-        while ($walkerA->next !== null && $walkerB->next !== null) {
-            $shorterLength++;
-            $walkerA = $walkerA->next;
-            $walkerB = $walkerB->next;
-        }
-        if ($walkerA->next !== null) {
-            $longerLength = $this->getRemainingLength($walkerA, $shorterLength);
-            return $this->findIntersectionNodeForSorted($headA, $headB, $longerLength - $shorterLength);
-        }
-        $longerLength = $this->getRemainingLength($walkerB, $shorterLength);
-        return $this->findIntersectionNodeForSorted($headB, $headA, $longerLength - $shorterLength);
-    }
-
-    private function getRemainingLength($head, $length) {
-        while ($head->next !== null) {
-            $length++;
-            $head = $head->next;
-        }
-
-        return $length;
-    }
-
-    private function findIntersectionNodeForSorted($longerList, $shorterList, $lengthDifference) {
-        for ($i = 0; $i < $lengthDifference; $i++) {
-            $longerList = $longerList->next;
-        }
-        while ($shorterList !== null) {
-            if ($shorterList === $longerList) {
-                return $shorterList;
+        while ($walkerA || $walkerB) {
+            if ($walkerA) {
+                $walkerA = $walkerA->next;
+                $lengthA++;
             }
-            $shorterList = $shorterList->next;
-            $longerList = $longerList->next;
+            if ($walkerB) {
+                $walkerB = $walkerB->next;
+                $lengthB++;
+            }
+        }
+
+        return new Lengths($lengthA, $lengthB);
+    }
+
+    private function findIntersectionNodeForListsWithLengths($a, $b, $lengths) {
+        while ($lengths->a > $lengths->b) {
+            $a = $a->next;
+            $lengths->a--;
+        }
+        while ($lengths->a < $lengths->b) {
+            $b = $b->next;
+            $lengths->b--;
+        }
+        while ($a || $b) {
+            if ($a === $b) {
+                return $b ?? $a;
+            }
+            $a = $a->next;
+            $b = $b->next;
         }
 
         return null;

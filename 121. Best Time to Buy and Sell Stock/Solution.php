@@ -7,15 +7,14 @@ class Solution {
      * @return Integer
      */
     function maxProfit($prices) {
-        $max = $min = reset($prices);
+        $min = reset($prices);
         $difference = 0;
         foreach ($prices as $price) {
             if ($price - $min > $difference) {
-                $max = $price;
-                $difference = $max - $min;
+                $difference = $price - $min;
             }
             if ($price < $min) {
-                $max = $min = $price;
+                $min = $price;
             }
         }
 

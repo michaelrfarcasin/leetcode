@@ -18,41 +18,21 @@ class Solution {
      * @return integer[]
      */
     function preorder($root) {
-        if ($root == null) {
-            return [];
-        }
-        $orderedNodes = $this->preorderWithTailRecursion($root, [], [$root]);
-        return array_reduce($orderedNodes, [$this, 'getValues'], []);
+        return $this->preorderWithRecursion($root, []);
     }
 
-    private function preorderWithTailRecursion($node, $visited, $toVisit) {
-        if (empty($toVisit)) {
-            return $visited;
+    /**
+     * @source https://leetcode.com/problems/n-ary-tree-preorder-traversal/solutions/872903/php-recursive-n-ary-tree-preorder-traversal/
+     */
+    private function preorderWithRecursion($node, $result) {
+        if (!isset($node)) {
+            return $result;
         }
-        $visited[spl_object_id($node)] = $node;
-        $unvisitedChildren = $this->getUnvisited($node->children, $visited);
-        if (!empty($unvisitedChildren)) {
-            $toVisit = array_merge($unvisitedChildren, [$node], $toVisit);
-        }
-        $nextNode = array_shift($toVisit);
-
-        return $this->preorderWithTailRecursion($nextNode, $visited, $toVisit);
-    }
-
-    private function getUnvisited($nodes, $visited) {
-        $unvisited = [];
-        foreach ($nodes as $node) {
-            if (!in_array($node, $visited, true)) {
-                $unvisited[] = $node;
-            }
+        $result[] = $node->val;
+        foreach ($node->children as $child) {
+            $result = $this->preorderWithRecursion($child, $result);
         }
 
-        return $unvisited;
-    }
-
-    public function getValues($partialValues, $node) {
-        $partialValues[] = $node->val;
-
-        return $partialValues;
+        return $result;
     }
 }

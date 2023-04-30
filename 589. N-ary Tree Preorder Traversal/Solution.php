@@ -51,4 +51,40 @@ class Solution {
 
         return $result;
     }
+
+    /**
+     * Usage:
+     * $orderedNodes = $this->preorderWithTailRecursion($root, [], [$root]);
+     * return array_reduce($orderedNodes, [$this, 'getValues'], []);
+     */
+    private function preorderWithTailRecursion($node, $visited = [], $toVisit = []) {
+        if (empty($toVisit) || !isset($node)) {
+            return $visited;
+        }
+        $visited[spl_object_id($node)] = $node;
+        $unvisitedChildren = $this->getUnvisited($node->children, $visited);
+        if (!empty($unvisitedChildren)) {
+            $toVisit = array_merge($unvisitedChildren, [$node], $toVisit);
+        }
+        $nextNode = array_shift($toVisit);
+
+        return $this->preorderWithTailRecursion($nextNode, $visited, $toVisit);
+    }
+
+    private function getUnvisited($nodes, $visited) {
+        $unvisited = [];
+        foreach ($nodes as $node) {
+            if (!in_array($node, $visited, true)) {
+                $unvisited[] = $node;
+            }
+        }
+
+        return $unvisited;
+    }
+
+    public function getValues($partialValues, $node) {
+        $partialValues[] = $node->val;
+
+        return $partialValues;
+    }
 }

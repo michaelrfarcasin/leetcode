@@ -7,26 +7,21 @@ class Solution extends VersionControl {
     /**
      * @param Integer $n
      * @return Integer
+     * @source https://leetcode.com/problems/first-bad-version/solutions/1928828/php-simple-and-fast-solution-without-built-in-functions/
      */
     function firstBadVersion($n) {
         $min = 1;
         $max = $n;
-        $lastBadIndex = -1;
+        $index = -1;
         while ($min < $max) {
             $index = floor(($min + $max) / 2);
-            $isBad = $this->isBadVersion($index);
-            if ($isBad) {
-                $lastBadIndex = $index;
-                $max = $index - 1;
+            if ($this->isBadVersion($index)) {
+                $max = $index;
                 continue;
             }
             $min = $index + 1;
         }
-        $index = floor(($min + $max) / 2);
-        if ($this->isBadVersion($index)) {
-            return $index;
-        }
 
-        return $lastBadIndex;
+        return $max;
     }
 }

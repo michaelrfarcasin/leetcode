@@ -8,9 +8,8 @@ class Solution {
      * @return Integer
      */
     function search($nums, $target) {
-        $count = count($nums);
         $min = 0;
-        $max = $count - 1;
+        $max = count($nums);
         while ($min < $max) {
             $index = floor(($min + $max) / 2);
             if ($nums[$index] == $target) {

@@ -24,10 +24,10 @@ class Solution {
             return [];
         }
 
-        return $this->levelOrderWithRecursion($root, 0);
+        return $this->levelOrderWithIteration($root);
     }
 
-    private function levelOrderWithRecursion($node, $height, $output = []) {
+    private function levelOrderWithRecursion($node, $height = 0, $output = []) {
         if (!isset($node)) {
             return $output;
         }
@@ -36,5 +36,30 @@ class Solution {
         $output = $this->levelOrderWithRecursion($node->right, $height+1, $output);
 
         return $output;
+    }
+
+    /**
+     * @source https://leetcode.com/problems/binary-tree-level-order-traversal/solutions/2910673/php-solution-iteration-bfs-beats-92-96/?envType=study-plan&id=level-1&languageTags=php
+     */
+    private function levelOrderWithIteration($root) {
+        $values = [];
+        $queue = [$root];
+        while (!empty($queue)) {
+            $level = [];
+            $size = count($queue);
+            for ($i = 0; $i < $size; $i++) {
+                $current = array_shift($queue);
+                $level[] = $current->val;
+                if ($current->left) {
+                    $queue[] = $current->left;
+                }
+                if ($current->right) {
+                    $queue[] = $current->right;
+                }
+            }
+            $values[] = $level;
+        }
+
+        return $values;
     }
 }

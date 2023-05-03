@@ -9,11 +9,12 @@ class Solution {
      */
     function twoSum($nums, $target) {
         $length = count($nums);
-        for ($j = 1; $j < $length; $j++) {
-            for ($i = 0; $i < $j; $i++) {
-                if ($nums[$i] + $nums[$j] == $target) {
-                    return [$i, $j];
-                }
+        $seen = [];
+        for ($i = 0; $i < $length; $i++) {
+            if (isset($seen[$nums[$i]])) {
+                return [$seen[$nums[$i]], $i];
+            } else {
+                $seen[$target - $nums[$i]] = $i;
             }
         }
 

@@ -5,11 +5,15 @@ class Solution {
     /**
      * @param Integer $n
      * @return Integer
+     * @source https://www.geeksforgeeks.org/tail-recursion-fibonacci/
      */
-    function fib($n) {
-        if ($n == 0 || $n == 1) {
-            return $n;
+    function fib($n, $a = 0, $b = 1) {
+        if ($n == 0) {
+            return $a;
         }
-        return $this->fib($n - 1) + $this->fib($n - 2);
+        if ($n == 1) {
+            return $b;
+        }
+        return $this->fib($n - 1, $b, $a + $b);
     }
 }

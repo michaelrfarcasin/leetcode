@@ -17,12 +17,14 @@ class Solution {
             if ($secret[$i] == $guess[$i]) {
                 $numberBulls++;
             } else {
-                if ($seen[$secret[$i]]++ < 0) {
+                if ($seen[$secret[$i]] < 0) {
                     $numberCows++;
                 }
-                if ($seen[$guess[$i]]-- > 0) {
+                $seen[$secret[$i]]++;
+                if ($seen[$guess[$i]] > 0) {
                     $numberCows++;
                 }
+                $seen[$guess[$i]]--;
             }
         }
 

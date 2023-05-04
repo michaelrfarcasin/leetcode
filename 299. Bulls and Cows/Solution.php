@@ -6,23 +6,24 @@ class Solution {
      * @param String $secret
      * @param String $guess
      * @return String
+     * @source https://leetcode.com/problems/bulls-and-cows/solutions/74621/one-pass-java-solution/?orderBy=most_votes
      */
     function getHint($secret, $guess) {
         $numberBulls = 0;
+        $numberCows = 0;
+        $seen = array_fill_keys([0,1,2,3,4,5,6,7,8,9], 0);
         $length = strlen($secret);
-        $secretMap = array_fill_keys(str_split($secret), 0);
-        $guessMap = array_fill_keys(str_split($guess), 0);
         for ($i = 0; $i < $length; $i++) {
             if ($secret[$i] == $guess[$i]) {
                 $numberBulls++;
             } else {
-                $secretMap[$secret[$i]]++;
-                $guessMap[$guess[$i]]++;
+                if ($seen[$secret[$i]]++ < 0) {
+                    $numberCows++;
+                }
+                if ($seen[$guess[$i]]-- > 0) {
+                    $numberCows++;
+                }
             }
-        }
-        $numberCows = 0;
-        foreach ($guessMap as $letter => $numberGuessed) {
-            $numberCows += min($secretMap[$letter], $numberGuessed);
         }
 
         return $numberBulls . 'A' . $numberCows . 'B';

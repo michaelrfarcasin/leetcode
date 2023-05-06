@@ -16,11 +16,7 @@ class Solution {
                 $weights[] = $weight;
             }
         }
-        if (count($weights) < 1) {
-            return 0;
-        }
-        if (count($weights) == 1) {
-            return reset($weights);
-        }
+
+        return reset($weights) ?? 0;
     }
 }

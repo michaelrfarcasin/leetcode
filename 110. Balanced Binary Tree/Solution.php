@@ -1,10 +1,5 @@
 <?php
 
-class MetaData {
-    public $height = 0;
-    public $isBalanced = true;
-}
-
 /**
  * Definition for a binary tree node.
  * class TreeNode {
@@ -23,22 +18,32 @@ class Solution {
     /**
      * @param TreeNode $root
      * @return Boolean
+     * @source https://leetcode.com/problems/balanced-binary-tree/solutions/329903/php/?envType=study-plan&id=level-2&orderBy=most_votes&languageTags=php
      */
     function isBalanced($root) {
-        return $this->getMetaData($root)->isBalanced;
+        return $this->calculateDepth($root) != -1;
     }
 
-    private function getMetaData($root) {
-        $metaData = new MetaData();
-        if ($root == null) {
-            return $metaData;
+    function calculateDepth($node) {
+        if ($node === null) {
+            return 0;
         }
-        $leftMetaData = $this->getMetaData($root->left);
-        $rightMetaData = $this->getMetaData($root->right);
-        $metaData->height = max($leftMetaData->height, $rightMetaData->height) + 1;
-        $heightsBalanced = abs($leftMetaData->height - $rightMetaData->height) <= 1;
-        $metaData->isBalanced = $leftMetaData->isBalanced && $rightMetaData->isBalanced && $heightsBalanced;
 
-        return $metaData;
+        $leftDepth = $this->calculateDepth($node->left);
+        if ($leftDepth == -1) {
+            return -1;
+        }
+
+        $rightDepth = $this->calculateDepth($node->right);
+        if ($rightDepth == -1) {
+            return -1;
+        }
+
+        if (abs($leftDepth - $rightDepth) > 1) {
+            return -1;
+        }
+
+        return Max($leftDepth, $rightDepth) + 1;
     }
+
 }

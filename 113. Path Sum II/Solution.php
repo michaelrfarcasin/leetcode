@@ -24,10 +24,10 @@ class Solution {
         if ($root === null) {
             return [];
         }
-        return $this->geRootToLeafSumPaths($root, $targetSum, []);
+         return $this->getRootToLeafSumPaths($root, $targetSum, []);
     }
 
-    private function geRootToLeafSumPaths($root, $targetSum, $currentPath) {
+    private function getRootToLeafSumPaths($root, $targetSum, $currentPath) {
         $currentPath[] = $root->val;
         if ($root->left === null && $root->right === null) {
             if ($targetSum === $root->val) {
@@ -39,8 +39,8 @@ class Solution {
         $newTarget = $targetSum - $root->val;
 
         return array_merge(
-            $this->geRootToLeafSumPaths($root->left, $newTarget, $currentPath),
-            $this->geRootToLeafSumPaths($root->right, $newTarget, $currentPath)
+            $this->getRootToLeafSumPaths($root->left, $newTarget, $currentPath),
+            $this->getRootToLeafSumPaths($root->right, $newTarget, $currentPath)
         );
     }
 }

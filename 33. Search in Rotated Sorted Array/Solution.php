@@ -20,7 +20,7 @@ class Solution {
             $mid = intdiv($low + $high, 2);
             $currentNumber = $nums[$mid];
             if (!$this->onSameSideOfPivot($nums, $target, $nums[$mid])) {
-                $currentNumber = $nums[0] < $target ? INF : -INF;
+                $currentNumber = $nums[0] <= $target ? INF : -INF;
             }
             if ($currentNumber == $target) {
                 return $mid;

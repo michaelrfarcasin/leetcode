@@ -43,36 +43,4 @@ class Solution {
 
         return $freshCount == 0 ? $minutes : -1;
     }
-
-    /** unused here, maybe useful */
-    private function getMaxDistanceToRotten($grid, $rottenQueue) {
-        $max = 0;
-        while (!empty($rottenQueue)) {
-            $rotten = array_shift($rottenQueue);
-            $row = $rotten['row'];
-            $col = $rotten['col'];
-            $distance = $rotten['distance'];
-            if ($distance > $max) {
-                $max = $distance;
-            }
-            if (!$visited[$row-1][$col] && $grid[$row-1][$col] === 1) {
-                $visited[$row-1][$col] = true;
-                $rottenQueue[] = ['row' => $row-1, 'col' => $col, 'distance' => $distance + 1];
-            }
-            if (!$visited[$row+1][$col] && $grid[$row+1][$col] === 1) {
-                $visited[$row+1][$col] = true;
-                $rottenQueue[] = ['row' => $row+1, 'col' => $col, 'distance' => $distance + 1];
-            }
-            if (!$visited[$row][$col-1] && $grid[$row][$col-1] === 1) {
-                $visited[$row][$col-1] = true;
-                $rottenQueue[] = ['row' => $row, 'col' => $col-1, 'distance' => $distance + 1];
-            }
-            if (!$visited[$row][$col+1] && $grid[$row][$col+1] === 1) {
-                $visited[$row][$col+1] = true;
-                $rottenQueue[] = ['row' => $row, 'col' => $col+1, 'distance' => $distance + 1];
-            }
-        }
-
-        return $max;
-    }
 }

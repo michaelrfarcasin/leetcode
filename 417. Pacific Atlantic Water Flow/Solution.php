@@ -46,4 +46,11 @@ class Solution {
             }
         }
     }
+
+    private function displayOceans() {
+        for ($i = 0; $i < $this->rows; $i++) {
+            var_dump(implode(',',$this->pacific[$i]) . ' ' .implode(',',$this->atlantic[$i]));
+        }
+        var_dump('');
+    }
 }

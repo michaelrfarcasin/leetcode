@@ -1,5 +1,15 @@
 <?php
 
+class Point {
+    public $bus;
+    public $depth;
+
+    public function __construct($bus, $depth) {
+        $this->bus = $bus;
+        $this->depth = $depth;
+    }
+}
+
 class Solution {
 
     /**
@@ -7,58 +17,74 @@ class Solution {
      * @param Integer $source
      * @param Integer $target
      * @return Integer
+     * @source Editorial
      */
     function numBusesToDestination($routes, $source, $target) {
         if ($source == $target) {
             return 0;
         }
-        $bussesByStop = $this->getBussesByStop($routes);
-        $length = $this->search($routes, $source, $target, $bussesByStop, [$source => true], []);
-
-        return $length == INF ? -1 : $length;
-    }
-
-    private function getBussesByStop($routes) {
-        $bussesByStop = [];
-        foreach ($routes as $bus => $route) {
-            foreach ($route as $stop) {
-                $bussesByStop[$stop][] = $bus;
+        $routes = array_map(function ($route) { sort($route); return $route; }, $routes);
+        $graph = $this->buildBusGraph($routes);
+        $seen = $targets = [];
+        $queue = new SplQueue();
+        $n = count($routes);
+        for ($bus = 0; $bus < count($routes); $bus++) {
+            if (array_search($source, $routes[$bus], true) !== false) {
+                $seen[$bus] = true;
+                $queue->enqueue(new Point($bus, 0));
+            }
+            if (array_search($target, $routes[$bus], true) !== false) {
+                $targets[$bus] = true;
             }
         }
-
-        return $bussesByStop;
-    }
-
-    private function search($routes, $source, $target, $bussesByStop, $stopsSeen, $bussesRidden) {
-        if ($source == $target) {
-            return count($bussesRidden);
-        }
-        $minLength = INF;
-        while (!empty($bussesByStop[$source])) {
-            $bus = array_shift($bussesByStop[$source]);
-            $bussesRidden[$bus] = true;
-            while (!empty($routes[$bus])) {
-                $stop = array_shift($routes[$bus]);
-                if ($stopsSeen[$stop]) {
-                    continue;
+        while (!$queue->isEmpty()) {
+            $info = $queue->dequeue();
+            $bus = $info->bus;
+            $depth = $info->depth;
+            if ($targets[$bus]) {
+                return $depth + 1;
+            }
+            foreach ($graph[$bus] as $nextBus) {
+                if (!$seen[$nextBus]) {
+                    $seen[$nextBus] = true;
+                    $queue->enqueue(new Point($nextBus, $depth + 1));
                 }
-                // var_dump($source . ' (' . implode(',',array_keys($bussesRidden)) . ") => (" . implode(',',array_keys($stopsSeen)) .") => $bus,$stop [" . implode(',',$routes[$bus]) . "]");
-                $stopsSeen[$stop] = true;
-                $thisBusIndex = array_search($bus, $bussesByStop[$stop], true);
-                unset($bussesByStop[$stop][$thisBusIndex]);
-                $length = $this->search($routes, $stop, $target, $bussesByStop, $stopsSeen, $bussesRidden);
-                $minLength = min($length, $minLength);
             }
-            unset($bussesRidden[$bus]);
         }
 
-        return $minLength;
+        return -1;
     }
 
-    private function dumpHashMap($hashMap) {
-        foreach ($hashMap as $key => $mappings) {
-            var_dump("$key => " . implode(',',$mappings));
+    private function buildBusGraph(array $routes): array {
+        $n = count($routes);
+        $graph = [];
+        for ($i = 0; $i < $n; ++$i) {
+            for ($j = $i + 1; $j < $n; ++$j) {
+                if ($this->intersect($routes[$i], $routes[$j])) {
+                    $graph[$i][] = $j;
+                    $graph[$j][] = $i;
+                }
+            }
         }
-        var_dump('');
+
+        return $graph;
+    }
+
+    private function intersect(array $a, array $b): bool {
+        $i = $j = 0;
+        $aLength = count($a);
+        $bLength = count($b);
+        while ($i < $aLength && $j < $bLength) {
+            if ($a[$i] == $b[$j]) {
+                return true;
+            }
+            if ($a[$i] < $b[$j]) {
+                $i++;
+            } else {
+                $j++;
+            }
+        }
+
+        return false;
     }
 }

@@ -15,14 +15,14 @@ class Solution {
         rsort($nums);
         $length = count($nums);
 
-        function backtracking($remaining, $i, $nums, $length) {
-            if ($remaining < $nums[$i] || $i >= $length) return false;
-            if ($remaining === $nums[$i]) return true;
+        return $this->backtracking($target, 0, $nums, $length);
+    }
 
-            return backtracking($remaining - $nums[$i], $i + 1, $nums, $length) ||
-                backtracking($remaining, $i + 1, $nums, $length);
-        }
+    function backtracking($remaining, $i, $nums, $length) {
+        if ($remaining < $nums[$i] || $i >= $length) return false;
+        if ($remaining === $nums[$i]) return true;
 
-        return backtracking($target, 0, $nums, $length);
+        return $this->backtracking($remaining - $nums[$i], $i + 1, $nums, $length) ||
+            $this->backtracking($remaining, $i + 1, $nums, $length);
     }
 }

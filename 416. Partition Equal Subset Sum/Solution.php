@@ -12,17 +12,20 @@ class Solution {
         if (!is_int($target)) {
             return false;
         }
-        rsort($nums);
         $length = count($nums);
+        $canMakeSum = array_fill(0, $length + 1, array_fill(0, $target + 1, false));
+        $canMakeSum[0][0] = true;
+        for ($i = 1; $i <= $length; $i++) {
+            for ($sum = 0; $sum <= $target; $sum++) {
+                if ($sum - $nums[$i - 1] >= 0) {
+                    $canMakeSum[$i][$sum] = $canMakeSum[$i - 1][$sum - $nums[$i - 1]] ||
+                        $canMakeSum[$i - 1][$sum];
+                } else {
+                    $canMakeSum[$i][$sum] = $canMakeSum[$i - 1][$sum];
+                }
+            }
+        }
 
-        return $this->backtracking($target, 0, $nums, $length);
-    }
-
-    function backtracking($remaining, $i, $nums, $length) {
-        if ($remaining < $nums[$i] || $i >= $length) return false;
-        if ($remaining === $nums[$i]) return true;
-
-        return $this->backtracking($remaining - $nums[$i], $i + 1, $nums, $length) ||
-            $this->backtracking($remaining, $i + 1, $nums, $length);
+        return $canMakeSum[$length][$target];
     }
 }

@@ -13,21 +13,21 @@ class Solution {
             return false;
         }
         $length = count($nums);
-        $previousRow = array_fill(0, $target + 1, false);
-        $currentRow = array_fill(0, $target + 1, false);
-        $previousRow[0][0] = true;
+        $canMake = array_fill(0, $target + 1, false);
+        $canMake[0] = true;
         for ($i = 1; $i <= $length; $i++) {
-            for ($sum = 0; $sum <= $target; $sum++) {
-                if ($sum - $nums[$i - 1] >= 0) {
-                    $currentRow[$sum] = $previousRow[$sum - $nums[$i - 1]] ||
-                        $previousRow[$sum];
-                } else {
-                    $currentRow[$sum] = $previousRow[$sum];
+            $value = $nums[$i - 1];
+            for ($sum = $target; $sum >= 0; $sum--) {
+                if ($sum - $value < 0) {
+                    break;
+                }
+                $canMake[$sum] = $canMake[$sum - $value] || $canMake[$sum];
+                if ($canMake[$target]) {
+                    return true;
                 }
             }
-            $previousRow = $currentRow;
         }
 
-        return $currentRow[$target];
+        return false;
     }
 }

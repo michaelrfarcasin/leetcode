@@ -13,19 +13,21 @@ class Solution {
             return false;
         }
         $length = count($nums);
-        $canMakeSum = array_fill(0, $length + 1, array_fill(0, $target + 1, false));
-        $canMakeSum[0][0] = true;
+        $previousRow = array_fill(0, $target + 1, false);
+        $currentRow = array_fill(0, $target + 1, false);
+        $previousRow[0][0] = true;
         for ($i = 1; $i <= $length; $i++) {
             for ($sum = 0; $sum <= $target; $sum++) {
                 if ($sum - $nums[$i - 1] >= 0) {
-                    $canMakeSum[$i][$sum] = $canMakeSum[$i - 1][$sum - $nums[$i - 1]] ||
-                        $canMakeSum[$i - 1][$sum];
+                    $currentRow[$sum] = $previousRow[$sum - $nums[$i - 1]] ||
+                        $previousRow[$sum];
                 } else {
-                    $canMakeSum[$i][$sum] = $canMakeSum[$i - 1][$sum];
+                    $currentRow[$sum] = $previousRow[$sum];
                 }
             }
+            $previousRow = $currentRow;
         }
 
-        return $canMakeSum[$length][$target];
+        return $currentRow[$target];
     }
 }

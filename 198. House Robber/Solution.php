@@ -12,11 +12,14 @@ class Solution {
         if ($length == 0) {
             return 0;
         }
-        $memo = [0, $nums[0]];
-        for ($i = 1; $i < $length; $i++) {
-            $memo[$i + 1] = max($memo[$i], $memo[$i - 1] + $nums[$i]);
+        $prevPrev = 0;
+        $prev = 0;
+        foreach ($nums as $num) {
+            $temp = $prev;
+            $prev = max($prev, $prevPrev + $num);
+            $prevPrev = $temp;
         }
 
-        return $memo[$length];
+        return $prev;
     }
 }

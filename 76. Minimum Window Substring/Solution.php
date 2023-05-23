@@ -11,6 +11,7 @@ class Solution {
      * @param String $s
      * @param String $t
      * @return String
+     * @source Editorial
      */
     function minWindow($s, $t) {
         $sLength = strlen($s);

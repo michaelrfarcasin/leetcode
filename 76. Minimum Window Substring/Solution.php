@@ -5,6 +5,16 @@ class Window {
     public $start = 0;
 }
 
+class Pair {
+    public $pos;
+    public $char;
+
+    public function __construct($pos, $char) {
+        $this->pos = $pos;
+        $this->char = $char;
+    }
+}
+
 class Solution {
 
     /**
@@ -20,22 +30,32 @@ class Solution {
             return '';
         }
         $frequencies = array_count_values(str_split($t));
+        $filteredS = [];
+        for ($i = 0; $i < $sLength; $i++) {
+            $c = $s[$i];
+            if (isset($frequencies[$c])) {
+                $filteredS[] = new Pair($i, $c);
+            }
+        }
+        $filteredSLength = count($filteredS);
         $numberRequired = count($frequencies);
         $numberFormed = 0;
         $windowCounts = [];
         $minWindow = new Window();
         $left = $right = 0;
-        while ($right < $sLength) {
-            $rightChar = $s[$right];
+        while ($right < $filteredSLength) {
+            $rightChar = $filteredS[$right]->char;
             $windowCounts[$rightChar]++;
             if (isset($frequencies[$rightChar]) && $windowCounts[$rightChar] === $frequencies[$rightChar]) {
                 $numberFormed++;
             }
             while ($left <= $right && $numberFormed == $numberRequired) {
-                $leftChar = $s[$left];
-                if ($minWindow->length == -1 || $right - $left + 1 < $minWindow->length) {
-                    $minWindow->length = $right - $left + 1;
-                    $minWindow->start = $left;
+                $leftChar = $filteredS[$left]->char;
+                $start = $filteredS[$left]->pos;
+                $end = $filteredS[$right]->pos;
+                if ($minWindow->length == -1 || $end - $start + 1 < $minWindow->length) {
+                    $minWindow->length = $end - $start + 1;
+                    $minWindow->start = $start;
                 }
 
                 $windowCounts[$leftChar]--;

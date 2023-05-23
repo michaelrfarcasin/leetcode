@@ -10,7 +10,6 @@ class Solution {
         $length = strlen($s);
         $max = $i = $j = 0;
         $seen = [];
-        $substring = '';
         while ($i < $length && $j < $length) {
             while ($seen[$s[$j]]) {
                 unset($seen[$s[$i]]);

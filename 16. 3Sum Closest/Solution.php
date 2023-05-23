@@ -6,6 +6,7 @@ class Solution {
      * @param Integer[] $nums
      * @param Integer $target
      * @return Integer
+     * @source https://youtu.be/eVS33j13PWY
      */
     function threeSumClosest($nums, $target) {
         $length = count($nums);

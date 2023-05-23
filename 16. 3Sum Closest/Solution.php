@@ -9,17 +9,23 @@ class Solution {
      */
     function threeSumClosest($nums, $target) {
         $length = count($nums);
+        sort($nums);
         $bestSum = INF;
-        for ($i = 0; $i < $length - 2; $i++) {
-            for ($j = $i + 1; $j < $length - 1; $j++) {
-                for ($k = $j + 1; $k < $length; $k++) {
-                    $sum = $nums[$i] + $nums[$j] + $nums[$k];
-                    if (abs($sum - $target) < abs($bestSum - $target)) {
-                        $bestSum = $sum;
-                    }
-                    if ($bestSum == $target) {
-                        return $bestSum;
-                    }
+        for ($i = 0; $i < $length; $i++) {
+            $j = $i + 1;
+            $k = $length - 1;
+            while ($j < $k) {
+                $sum = $nums[$i] + $nums[$j] + $nums[$k];
+                if (abs($sum - $target) < abs($bestSum - $target)) {
+                    $bestSum = $sum;
+                }
+                if ($sum == $target) {
+                    return $sum;
+                }
+                if ($sum < $target) {
+                    $j++;
+                } else {
+                    $k--;
                 }
             }
         }

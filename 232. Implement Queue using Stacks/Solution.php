@@ -1,20 +1,21 @@
 <?php
 
 class MyQueue {
-    private $front = [];
-    private $back = [];
+    private $endIsBack = [];
+    private $endIsFront = [];
+    private $frontElement;
 
     private function toFront() {
-        while (!empty($this->back)) {
-            $value = array_pop($this->back);
-            $this->front[] = $value;
+        while (!empty($this->endIsFront)) {
+            $value = array_pop($this->endIsFront);
+            $this->endIsBack[] = $value;
         }
     }
 
     private function toBack() {
-        while (!empty($this->front)) {
-            $value = array_pop($this->front);
-            $this->back[] = $value;
+        while (!empty($this->endIsBack)) {
+            $value = array_pop($this->endIsBack);
+            $this->endIsFront[] = $value;
         }
     }
 
@@ -23,31 +24,37 @@ class MyQueue {
      * @return NULL
      */
     function push($x) {
+        if (empty($this->endIsFront)) {
+            $this->frontElement = $x;
+        }
         $this->toFront();
-        array_push($this->front, $x);
+        array_push($this->endIsBack, $x);
+        $this->toBack();
     }
 
     /**
      * @return Integer
      */
     function pop() {
-        $this->toBack();
-        return array_pop($this->back);
+        $element = array_pop($this->endIsFront);
+        if (!empty($this->endIsFront)) {
+            $this->frontElement = end($this->endIsFront);
+        }
+        return $element;
     }
 
     /**
      * @return Integer
      */
     function peek() {
-        $this->toBack();
-        return end($this->back);
+        return $this->frontElement;
     }
 
     /**
      * @return Boolean
      */
     function empty() {
-        return empty($this->front) && empty($this->back);
+        return empty($this->endIsFront);
     }
 }
 

@@ -5,14 +5,14 @@ class MyQueue {
     private $endIsFront = [];
     private $frontElement;
 
-    private function toFront() {
+    private function toEndIsBack() {
         while (!empty($this->endIsFront)) {
             $value = array_pop($this->endIsFront);
             $this->endIsBack[] = $value;
         }
     }
 
-    private function toBack() {
+    private function toEndIsFront() {
         while (!empty($this->endIsBack)) {
             $value = array_pop($this->endIsBack);
             $this->endIsFront[] = $value;
@@ -27,9 +27,9 @@ class MyQueue {
         if (empty($this->endIsFront)) {
             $this->frontElement = $x;
         }
-        $this->toFront();
+        $this->toEndIsBack();
         array_push($this->endIsBack, $x);
-        $this->toBack();
+        $this->toEndIsFront();
     }
 
     /**

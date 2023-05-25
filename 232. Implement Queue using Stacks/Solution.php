@@ -1,16 +1,10 @@
 <?php
 
+/** @source Editorial */
 class MyQueue {
     private $endIsBack = [];
     private $endIsFront = [];
     private $frontElement;
-
-    private function toEndIsBack() {
-        while (!empty($this->endIsFront)) {
-            $value = array_pop($this->endIsFront);
-            $this->endIsBack[] = $value;
-        }
-    }
 
     private function toEndIsFront() {
         while (!empty($this->endIsBack)) {
@@ -24,29 +18,29 @@ class MyQueue {
      * @return NULL
      */
     function push($x) {
-        if (empty($this->endIsFront)) {
+        if (empty($this->endIsBack)) {
             $this->frontElement = $x;
         }
-        $this->toEndIsBack();
         array_push($this->endIsBack, $x);
-        $this->toEndIsFront();
     }
 
     /**
      * @return Integer
      */
     function pop() {
-        $element = array_pop($this->endIsFront);
-        if (!empty($this->endIsFront)) {
-            $this->frontElement = end($this->endIsFront);
+        if (empty($this->endIsFront)) {
+            $this->toEndIsFront();
         }
-        return $element;
+        return array_pop($this->endIsFront);
     }
 
     /**
      * @return Integer
      */
     function peek() {
+        if (!empty($this->endIsFront)) {
+            return end($this->endIsFront);
+        }
         return $this->frontElement;
     }
 
@@ -54,7 +48,7 @@ class MyQueue {
      * @return Boolean
      */
     function empty() {
-        return empty($this->endIsFront);
+        return empty($this->endIsBack) && empty($this->endIsFront);
     }
 }
 

@@ -1,39 +1,51 @@
 <?php
 
+class Pair {
+    public $val;
+    public $min;
+
+    public function __construct($val, $min) {
+        $this->val = $val;
+        $this->min = $min;
+    }
+}
+
+/** @source https://www.youtube.com/watch?v=qkLl7nAwDPo */
 class MinStack {
     private $stack = [];
-    private $min = INF;
 
     /**
      * @param Integer $val
      * @return NULL
      */
     function push($val) {
-        if ($val < $this->min) {
-            $this->min = $val;
+        $min = INF;
+        if (!empty($this->stack)) {
+            $min = $this->getMin();
         }
-        array_push($this->stack, $val);
+        $min = min($min, $val);
+        array_push($this->stack, new Pair($val, $min));
     }
 
     /**
      * @return NULL
      */
     function pop() {
-        return array_pop($this->stack);
+        return array_pop($this->stack)->val;
     }
 
     /**
      * @return Integer
      */
     function top() {
-        return end($this->stack);
+        return end($this->stack)->val;
     }
 
     /**
      * @return Integer
      */
     function getMin() {
-        return $this->min;
+        return end($this->stack)->min;
     }
 }
 

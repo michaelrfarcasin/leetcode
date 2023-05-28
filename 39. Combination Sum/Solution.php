@@ -1,32 +1,35 @@
 <?php
 
 class Solution {
-    private $sums = [];
+    private $combinations = [];
+    private $candidates = [];
+    private $target = 0;
 
     /**
      * @param Integer[] $candidates
      * @param Integer $target
      * @return Integer[][]
-     * @source discussion
+     * @source https://youtu.be/GBKI9VSKdGg
      */
     function combinationSum($candidates, $target) {
         sort($candidates);
-        $this->getCombinations($candidates, $target, []);
+        $this->candidates = $candidates;
+        $this->target = $target;
+        $this->getCombinations(0, [], 0);
 
-        return $this->sums;
+        return $this->combinations;
     }
 
-    private function getCombinations($candidates, $target, $combination) {
-        if ($target == 0) {
-            sort($combination);
-            $this->sums[implode(',',$combination)] = $combination;
+    private function getCombinations($i, $combination, $total) {
+        if ($total == $this->target) {
+            $this->combinations[] = $combination;
             return;
         }
-        foreach ($candidates as $candidate) {
-            if ($target - $candidate < 0) {
-                break;
-            }
-            $this->getCombinations($candidates, $target - $candidate, array_merge($combination, [$candidate]));
+        if ($i >= count($this->candidates) || $total > $this->target) {
+            return;
         }
+        $candidate = $this->candidates[$i];
+        $this->getCombinations($i, array_merge($combination, [$candidate]), $total + $candidate);
+        $this->getCombinations($i + 1, $combination, $total);
     }
 }
